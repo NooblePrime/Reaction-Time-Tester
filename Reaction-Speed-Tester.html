@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+    <title>Reaction Speed Test</title>
+</head>
+<body onload="start()">
+    <h2>Reaction Speed Test</h2>
+    <p>This is a reacton speed test, as the big text above implies. To start the test, press the space bar. Once the test begins, an invisible timer with a random value between 5 and 15 seconds will begin counting down. The red circle will turn yellow to tell you that the timer has begun. When that timer hits zero, the circle will turn from yellow to green. Once it does, press the space bar as fast as you can, and your reaction time will be displayed. It's not worth it to try cheesing it by spamming space though, because pressing space before it turns green will only reset the timer. Once your reaction time is displayed, you can press the Enter key to reset it.</p>
+    <div onload="start()">
+        <canvas id="myCanvas" width="800px" height="600px">
+            <script>
+                const c = document.getElementById("myCanvas");
+                const ctx = c.getContext("2d");
+                var time = 1;
+                var green = false;
+                var ms = 0;
+                var timer;
+                var stopwatch;
+                var done = false;
+                ctx.arc(400, 300, 50, 0, 2*Math.PI);
+                ctx.fillStyle = "#FF0000";
+                ctx.fill();
+                function count(){
+                    ms += 1;
+                };
+                function greenLight(){
+                    green = true;
+                    ctx.fillStyle = "#00FF00";
+                    ctx.fill();
+                    stopwatch = setInterval(count, 1);
+                };
+                function keydown(key){
+                    if(key == 32){
+                        if(green == false){
+                            ctx.fillStyle = "#EEEE00";
+                            ctx.fill();
+                            time = Math.round(Math.random()*10000) + 5000;
+                            timer = setTimeout(greenLight, time);
+                        } else{
+                            if(done == false){
+                                ctx.fillStyle = "black";
+                                ctx.font = "30px Arial";
+                                ctx.fillText(ms + "ms", 30, 30);
+                                console.log(ms);
+                                clearInterval(stopwatch);
+                                done = true;
+                            };
+                        };
+                    }else if(key == 13){
+                        window.location.reload();
+                    };
+                };
+                function start(){
+                    window.addEventListener("keydown", KeyboardEvent => keydown(KeyboardEvent.keyCode));
+                };
+            </script>
+        </canvas>
+    </div>
+</body>
